@@ -1,28 +1,29 @@
 {% set name = "trame-vuetify" %}
-{% set version = "3.3.0" %}
+{% set version = "3.2.5" %}
 
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://files.pythonhosted.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
-  sha256: cdef8316d7e7100a6a35aa6d76dd03263956041b534578ba9218f316ffc7d9f9
+  sha256: aec18c581eef0eeb41a64bc50e52f4867ea40777f002c079a0a927a73f99fc4d
 
 build:
   number: 0
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
+  skip: true # [py<39]
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
     - pip
-    - python {{ python_min }}
+    - python
     - setuptools
+    - wheel
   run:
-    - python >={{ python_min }}
-    - trame-client
+    - python
+    - trame-client >=3.7,<4
 
 test:
   imports:
@@ -32,13 +33,20 @@ test:
     - pip check
   requires:
     - pip
-    - python {{ python_min }}
+    - python
 
 about:
   home: https://pypi.org/project/trame-vuetify/
   summary: Vuetify widgets for trame
+  description: |
+    Trame-vuetify extend trame widgets and ui with all the beautiful Vuetify UI components.
+    Vuetify is a UI Library with beautifully handcrafted Material Components.
+    No design skills required — everything you need to create amazing applications is at your fingertips.
   license: MIT
   license_file: LICENSE
+  license_family: MIT
+  dev_url: https://github.com/Kitware/trame-vuetify
+  doc_url: https://kitware.github.io/trame/guide/
 
 extra:
   recipe-maintainers:
